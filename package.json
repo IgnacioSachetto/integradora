@@ -1,5 +1,5 @@
 {
-  "name": "Restructuracion",
+  "name": "Tercer Modulo",
   "version": "1.0.0",
   "type": "module",
   "description": "",
@@ -13,14 +13,10 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Salocin0/PrimerPreentregaDurelli-backend.git"
+    "url": "https://github.com/IgnacioSachetto/logger"
   },
   "author": "",
   "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/Salocin0/PrimerPreentregaDurelli-backend/issues"
-  },
-  "homepage": "https://github.com/Salocin0/PrimerPreentregaDurelli-backend#readme",
   "dependencies": {
     "@faker-js/faker": "^8.0.2",
     "bcrypt": "^5.1.0",
@@ -40,6 +36,7 @@
     "passport-github2": "^0.1.12",
     "passport-local": "^1.0.0",
     "session-file-store": "^1.5.0",
-    "socket.io": "^4.7.2"
+    "socket.io": "^4.7.2",
+    "winston": "^3.10.0"
   }
 }

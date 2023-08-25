@@ -4,6 +4,7 @@ import GitHubStrategy from 'passport-github2';
 import local from 'passport-local';
 import { UserModel } from '../DAO/models/mongoose/users.model.js';
 import { createHash, isValidPassword } from '../utils/bcrypt.js';
+import { selectedLogger } from '../utils/logger.js';
 const LocalStrategy = local.Strategy;
 
 export function iniPassport() {
@@ -17,7 +18,7 @@ export function iniPassport() {
       },
 
       async (accesToken, _, profile, done) => {
-        console.log(profile);
+        selectedLogger.info(profile);
         try {
           const res = await fetch('https://api.github.com/user/emails', {
             headers: {
@@ -42,15 +43,15 @@ export function iniPassport() {
               rol:'Usuario'
             };
             let userCreated = await UserModel.create(newUser);
-            console.log('User Registration succesful');
+            selectedLogger.info('User Registration succesful');
             return done(null, userCreated);
           } else {
-            console.log('User already exists');
+            selectedLogger.info('User already exists');
             return done(null, user);
           }
         } catch (e) {
-          console.log('Error en auth github');
-          console.log(e);
+          selectedLogger.error('Error en auth github');
+          selectedLogger.error(e);
           return done(e);
         }
       }
@@ -66,11 +67,11 @@ export function iniPassport() {
         try {
         const user = await UserModel.findOne({ email: username });
         if (!user) {
-          console.log('User Not Found with username (email) ' + username);
+          selectedLogger.error('User Not Found with username (email) ' + username);
           return done(null, false);
         }
         if (!isValidPassword(password, user.password)) {
-          console.log('Invalid Password');
+          selectedLogger.error('Invalid Password');
           return done(null, false);
         }
         return done(null, user);
@@ -95,17 +96,17 @@ export function iniPassport() {
           }
           let user = await UserModel.findOne({ email: username });
           if (user) {
-            console.log('User already exists');
+            selectedLogger.error('User already exists');
             return done(null, false);
           }
         let newuser = await UserModel.create({ firstName, lastName, age, email, password:createHash(password),rol:'user'});
-        console.log(newuser);
-        console.log('User Registration succesful');
+        selectedLogger.info(newuser);
+        selectedLogger.info('User Registration succesful');
         return done(null, newuser);
 
         } catch (e) {
-          console.log('Error in register');
-          console.log(e);
+          selectedLogger.error('Error in register');
+          selectedLogger.error(e);
           return done(e);
         }
       }

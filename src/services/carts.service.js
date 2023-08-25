@@ -5,6 +5,8 @@ import { ticketsModel } from '../DAO/models/mongoose/tickets.model.js';
 import { sendPurchaseConfirmationEmail } from '../controllers/mail.controller.js';
 import CustomError from '../services/errors/custom-error.js';
 import EErrors from '../services/errors/enums.js';
+import { selectedLogger } from '../utils/logger.js';
+
 class CartService {
   validateId(id) {
     if (!id) {
@@ -59,7 +61,7 @@ class CartService {
     let cartCreated = null;
     if (userid) {
       cartCreated = await modelCart.createCart(product, userid);
-      console.log(cartCreated);
+      selectedLogger.info(cartCreated);
     }
     return cartCreated;
   }
@@ -90,7 +92,6 @@ class CartService {
     this.validateProduct(pid);
     const cart = await this.getCart(cid);
     let existingProduct = cart.products.find(p => p.id._id.toString() === pid.toString());
-    console.log(existingProduct);
 
     if (existingProduct) {
         existingProduct.quantity += 1;
@@ -156,7 +157,7 @@ class CartService {
             product.quantity -= productdb.stock;
             ticket.amount += productdb.price * productdb.stock;
             productdb.stock = 0;
-            console.log("producto en base de datos antes de guardar", productdb);
+
             await modelProduct.updateProduct(
                 productdb._id,
                 productdb.title,

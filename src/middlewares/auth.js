@@ -9,7 +9,6 @@ export function isAmdin(req, res, next) {
 
 export function isUser(req, res, next) {
   if (req.session.email) {
-    console.log(req.session.email);
     return next();
   }
   return res.status(401).render('error-page', { msg: 'please log in!' });

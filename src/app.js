@@ -5,6 +5,8 @@ import express from 'express';
 import handlebars from 'express-handlebars';
 import session from 'express-session';
 import passport from 'passport';
+import { addLogger, selectedLogger } from './utils/logger.js';
+
 import { iniPassport } from './config/passport.config.js';
 import { __dirname } from './dirname.js';
 import errorHandler from './middlewares/error.js';
@@ -22,10 +24,15 @@ import { connectMongo } from './utils/connections.js';
 import { connectSocket } from './utils/socket-server.js';
 
 
+
+
+
 dotenv.config();
-console.log();
 
 const app = express();
+
+app.use(addLogger);
+
 const port = process.env.PORT;
 
 connectMongo();
@@ -63,8 +70,26 @@ app.use('/vista/products', routerVistaProducts);
 app.use('/', viewsRouter);
 app.use('/api/sessions', loginRouter);
 app.use('/chatsocket', routerViewChat);
-app.use('/mail', routerViewMail)
+app.use('/mail', routerViewMail);
 app.get('/api/sessions/github', passport.authenticate('github', { scope: ['user:email'] }));
+
+
+app.get('/loggerTest', (req, res) => {
+  selectedLogger.error(`${req.method} on ${req.url} - ${new Date().toLocaleTimeString()}`);
+  selectedLogger.warning(`${req.method} on ${req.url} - ${new Date().toLocaleTimeString()}`);
+  selectedLogger.info(`${req.method} on ${req.url} - ${new Date().toLocaleTimeString()}`);
+  selectedLogger.http(`${req.method} on ${req.url} - ${new Date().toLocaleTimeString()}`);
+  selectedLogger.verbose(`${req.method} on ${req.url} -${new Date().toLocaleTimeString()}`);
+  selectedLogger.debug(`${req.method} on ${req.url} -${new Date().toLocaleTimeString()}`);
+
+  return res.status(200).json({
+    status: 'success',
+    msg: 'all logs'
+  });
+
+});
+
+
 
 app.get('/api/sessions/githubcallback', passport.authenticate('github', { failureRedirect: '/error-autentificacion' }), (req, res) => {
   req.session.firstName = req.user.firstName;
@@ -83,6 +108,8 @@ app.get('*', (req, res) => {
     data: {},
   });
 });
+
+
 
 const httpServer = app.listen(port, () => {
   console.log('Servidor escuchando en el puerto ' + process.env.PORT);

@@ -35,7 +35,6 @@ export function connectSocket(httpServer) {
         await productApiService.deleteProduct(iidd);
 
         let allProducts = await productApiService.getProducts();
-        console.log("socket server del back", allProducts)
         socketServer.emit("all-the-products", allProducts);
       } catch (error) {
         CustomError.createError({

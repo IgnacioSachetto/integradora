@@ -2,6 +2,8 @@ import dotenv from 'dotenv';
 import nodemailer from 'nodemailer';
 import CustomError from '../services/errors/custom-error.js';
 import EErrors from '../services/errors/enums.js';
+import { selectedLogger } from '../utils/logger.js';
+
 dotenv.config();
 
 export const mailController = nodemailer.createTransport({
@@ -33,8 +35,8 @@ export async function sendPurchaseConfirmationEmail(ticket) {
       `,
     });
 
-    console.log(result);
-    console.log("Email sent successfully");
+    selectedLogger.info(result);
+    selectedLogger.info("Email sent successfully");
   } catch (e) {
     CustomError.createError({
       name: 'Error Envio Mail',

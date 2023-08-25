@@ -17,9 +17,7 @@ routerVistaProducts.get('/', async (req, res) => {
   const lastName = req.session.user?.lastName;
   const email = req.session.user?.email;
   const rol = req.session.user?.rol;
-  console.log(req.session.user?._id.toString())
   const cart = await cartService.createCart(req.session.user?._id.toString())
-  console.log(cart)
 
   const foundUser = {
     firstName: firstName,
