@@ -46,6 +46,11 @@ class UserService {
     return user;
   }
 
+  async getOneUser(email) {
+    const user = await modelUsuario.getOneUser(email);
+    return user;
+  }
+
   async createUser(firstName, lastName, email) {
     this.validatePostUser(firstName, lastName, email);
     const userCreated = await modelUsuario.createUser(firstName, lastName, email);

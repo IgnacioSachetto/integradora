@@ -1,3 +1,5 @@
+// mailController.js
+
 import dotenv from 'dotenv';
 import nodemailer from 'nodemailer';
 import CustomError from '../services/errors/custom-error.js';
@@ -19,7 +21,7 @@ export async function sendPurchaseConfirmationEmail(ticket) {
   try {
     const result = await mailController.sendMail({
       from: process.env.GOOGLE_EMAIL,
-      to: 'nachosachetto1998@hotmail.com',
+      to: 'nachosachetto1998@hotmail.com', // Cambia esta dirección de correo electrónico según tus necesidades
       subject: "Compra Realizada",
       html: `
         <div>
@@ -41,6 +43,33 @@ export async function sendPurchaseConfirmationEmail(ticket) {
     CustomError.createError({
       name: 'Error Envio Mail',
       cause: 'Ocurrió un error inesperado enviando su notificación',
+      message: 'Error inesperado en el servidor. Por favor, contacta al equipo de soporte.',
+      code: EErrors.MAIL_SEND_ERROR,
+    });
+  }
+}
+
+export async function sendMailRecovery({ email, token }) {
+  try {
+    const result = await mailController.sendMail({
+      from: process.env.GOOGLE_EMAIL,
+      to: 'nachosachetto1998@hotmail.com',
+      subject: "Recuperación de Contraseña",
+      html: `
+        <div>
+          <h1>Recuperación de Contraseña</h1>
+          <p>Tu código para cambiar la contraseña es: ${token}</p>
+          <a href="${process.env.API_URL}/recover-pass?token=${token}&email=${email}">Cambiar contraseña</a>
+        </div>
+      `,
+    });
+
+    selectedLogger.info(result);
+    selectedLogger.info("Email sent successfully");
+  } catch (e) {
+    CustomError.createError({
+      name: 'Error Envío de Correo de Recuperación',
+      cause: 'Ocurrió un error inesperado enviando su notificación de recuperación de contraseña',
       message: 'Error inesperado en el servidor. Por favor, contacta al equipo de soporte.',
       code: EErrors.MAIL_SEND_ERROR,
     });

@@ -24,3 +24,5 @@ error: GET on /loggerTest - 18:12:43
 error: GET on /loggerTest - 18:13:10
 error: Conectado
 error: GET on /loggerTest - 18:53:51
+error: Invalid Password
+error: Invalid Password

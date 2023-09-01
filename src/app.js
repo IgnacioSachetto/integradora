@@ -18,11 +18,12 @@ import { routerViewMail } from './routes/mail.router.js';
 import { routerProductos } from './routes/products.router.js';
 import { routerVistaProducts } from './routes/products.vista.router.js';
 import { routerVistaRealTimeProducts } from './routes/realTimeProducts.vista.router.js';
+import { routerRecoverMail } from './routes/recoverEmail.router.js';
+import { routerRecoverPass } from './routes/recoverPass.router.js';
 import { routerUsers } from './routes/users.router.js';
 import { viewsRouter } from './routes/views.router.js';
 import { connectMongo } from './utils/connections.js';
 import { connectSocket } from './utils/socket-server.js';
-
 
 
 
@@ -72,6 +73,10 @@ app.use('/api/sessions', loginRouter);
 app.use('/chatsocket', routerViewChat);
 app.use('/mail', routerViewMail);
 app.get('/api/sessions/github', passport.authenticate('github', { scope: ['user:email'] }));
+app.use('/recover-pass', routerRecoverPass);
+app.use('/recover-mail', routerRecoverMail);
+
+
 
 
 app.get('/loggerTest', (req, res) => {
@@ -115,6 +120,34 @@ const httpServer = app.listen(port, () => {
   console.log('Servidor escuchando en el puerto ' + process.env.PORT);
 });
 connectSocket(httpServer);
+
+
+
+
+
+
+
+
+app.use(errorHandler);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 app.use(errorHandler)
 
