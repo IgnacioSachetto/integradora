@@ -5,6 +5,8 @@ export const routerUsers = express.Router();
 
 routerUsers.get('/', userController.getAll);
 
+routerUsers.get('/premium/:uid', userController.changerol);
+
 routerUsers.get('/:id', userController.getOne);
 
 routerUsers.post('/', userController.create);

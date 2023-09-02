@@ -16,8 +16,8 @@ class ModelProduct {
     return product;
   }
 
-  async createProduct(title, description, code, price, status, stock, category, thumbnails) {
-    const productcreated = await ProductsModel.create({ title, description, code, price, status, stock, category, thumbnails });
+  async createProduct(title, description, code, price, status, stock, category, thumbnails,owner="admin") {
+    const productcreated = await ProductsModel.create({ title, description, code, price, status, stock, category, thumbnails,owner });
     return productcreated;
   }
 
@@ -26,8 +26,8 @@ class ModelProduct {
     return userUptaded;
   }
 
-  async deleteProduct(id) {
-    const deleted = await ProductsModel.deleteOne({ _id: id });
+  async deleteProduct(id,user) {
+    const deleted = await ProductsModel.deleteOne({ _id: id },{owner:user});
     return deleted;
   }
 }
