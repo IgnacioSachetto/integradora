@@ -115,6 +115,28 @@ class UserController {
       });
     }
   }
+
+  async changerol(req, res) {
+    try {
+      const { uid } = req.params;
+      const changed = await userService.changerol(uid);
+      if(changed){
+        return res.status(200).json({
+          status: 'success',
+          msg: 'user rol change',
+          data: changed,
+        });
+      }
+    } catch (e) {
+      console.log(e)
+      CustomError.createError({
+        name: 'Error Del Servidor',
+        cause: 'Ocurrió un error inesperado en el servidor. La operación no pudo completarse.',
+        message: 'Lo sentimos, ha ocurrido un error inesperado en el servidor. Por favor, contacta al equipo de soporte.',
+        code: EErrors.ERROR_INTERNO_SERVIDOR,
+      });
+    }
+  }
 }
 
 export const userController = new UserController();

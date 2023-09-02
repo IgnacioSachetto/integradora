@@ -30,7 +30,7 @@ class ModelProduct {
     return product;
   }
 
-  async createProduct(title, description, code, price, status, stock, category, thumbnails) {
+  async createProduct(title, description, code, price, status, stock, category, thumbnails,owner="admin") {
     const productcreated={
         title:title,
         description:description,
@@ -40,7 +40,8 @@ class ModelProduct {
         stock:stock,
         category:category,
         thumbnails:thumbnails,
-        id:Math.random()*100000000
+        id:Math.random()*100000000,
+        owner:owner
     }
     this.products.push(productcreated);
     return productcreated;
@@ -60,7 +61,7 @@ class ModelProduct {
     return product;
   }
 
-  async deleteProduct(id) {
+  async deleteProduct(id,user) {
     const deleted = this.products.filter(u => u.id !== id);
     return deleted;
   }
